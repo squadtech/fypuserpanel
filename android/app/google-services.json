@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "634265277687",
+    "firebase_url": "https://finalyear-675bf.firebaseio.com",
+    "project_id": "finalyear-675bf",
+    "storage_bucket": "finalyear-675bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634265277687:android:82bbb49a56c6bc8b4eaff2",
+        "android_client_info": {
+          "package_name": "com.desdev.fyp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634265277687-5fh8sam4hie0hn33nvaakmro54on1kun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCseF8Vs7XAEXPGzbrJyRqd8nX9JmoPm70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634265277687-5fh8sam4hie0hn33nvaakmro54on1kun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634265277687:android:e3d2debddde3243c4eaff2",
+        "android_client_info": {
+          "package_name": "com.desdev.fypadminpanel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634265277687-5fh8sam4hie0hn33nvaakmro54on1kun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCseF8Vs7XAEXPGzbrJyRqd8nX9JmoPm70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634265277687-5fh8sam4hie0hn33nvaakmro54on1kun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

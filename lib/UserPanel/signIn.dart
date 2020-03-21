@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp/UserPanel/resetPassword.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'home.dart';
 import 'package:fyp/UserPanel/UserpanelSignUp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class signIn extends StatefulWidget {
   @override
   _signInState createState() => _signInState();
 }
+
+String _email, _password, _name;
+final _emailcontroller = TextEditingController();
+final _passwordcontroller = TextEditingController();
+
+//Progress bar Initialization
+ProgressDialog pr;
 
 class _signInState extends State<signIn> {
 
@@ -100,6 +110,7 @@ class _secondsignInState extends State<secondsignIn> {
                       height: 12.0,
                     ),
                     TextFormField(
+                      controller: _emailcontroller,
                       decoration:  InputDecoration(
                         labelText: "Email",
                         fillColor: Colors.white,
@@ -118,6 +129,7 @@ class _secondsignInState extends State<secondsignIn> {
                       height: 12.0,
                     ),
                     TextFormField(
+                      controller: _passwordcontroller,
                       decoration:  InputDecoration(
                         labelText: "Password",
                         fillColor: Colors.white,
@@ -170,9 +182,14 @@ class _secondsignInState extends State<secondsignIn> {
                                 builder: (BuildContext context) => theme()
                             )
                         );},
-                        child: Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
+                        child: GestureDetector(
+                          onTap: (){
+                            signIn();
+                          },
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
                         ),
                         backgroundColor: Colors.red.shade600,
                       ),
@@ -193,23 +210,7 @@ class _secondsignInState extends State<secondsignIn> {
                             )),
                       ],
                     ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    SizedBox(
-                      width: 250.0,
-                      height: 40.0,
-                      child: FlatButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Sign up with Google",
-                          style: TextStyle(color: Colors.red.shade600),
-                        ),
-                        color: Colors.grey.shade200,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(9.0)),
-                      ),
-                    ),
+
                     SizedBox(
                       height: 100.0,
                     ),
@@ -238,6 +239,53 @@ class _secondsignInState extends State<secondsignIn> {
         ],
       ),
     );
+  }
+
+  //Sign in will be called to validate if User Exist
+  Future<void> signIn() async {
+
+    _email = _emailcontroller.text;
+    _password = _passwordcontroller.text;
+
+//On Sign In Button Press Progress bar will apear
+    try{
+      pr.style(
+          message: 'Please Wait...',
+          borderRadius: 10.0,
+          backgroundColor: Colors.white,
+          progressWidget: CircularProgressIndicator(),
+          elevation: 10.0,
+          insetAnimCurve: Curves.easeInOut,
+          progress: 0.0,
+          maxProgress: 100.0,
+          progressTextStyle: TextStyle(
+              color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+          messageTextStyle: TextStyle(
+              color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600)
+      );
+      await pr.show();
+
+      //Validate User and password
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email:_email , password: _password);
+      pr.hide().then((isHidden) {
+        print(isHidden);
+      });
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => theme()));
+    }catch(e){
+      Fluttertoast.showToast(
+          msg: e.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.grey.shade300,
+          textColor: Colors.black,
+          fontSize: 16.0
+      );
+      pr.hide().then((isHidden) {
+        print(isHidden);
+      });
+      print(e.message);
+    }
   }
 }
 

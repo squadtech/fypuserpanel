@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'signIn.dart';
 
 class UserPanelSignup extends StatefulWidget {
@@ -8,9 +11,18 @@ class UserPanelSignup extends StatefulWidget {
   _UserPanelSignInState createState() => _UserPanelSignInState();
 }
 
+bool _validate = false;
+String _email, _password, _name;
+final databaseReference = Firestore.instance;
+final _emailcontroller = TextEditingController();
+final _passwordcontroller = TextEditingController();
+final _namecontroller = TextEditingController();
+ProgressDialog pr;
 class _UserPanelSignInState extends State<UserPanelSignup> {
+
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SafeArea(
@@ -96,6 +108,7 @@ class _secondSignupState extends State<secondSignup> {
                   height: 12.0,
                 ),
                  TextFormField(
+                   controller: _namecontroller,
                     decoration:  InputDecoration(
                       labelText: "Full Name",
                       fillColor: Colors.white,
@@ -109,11 +122,11 @@ class _secondSignupState extends State<secondSignup> {
                     keyboardType: TextInputType.text,
                     autofocus: false,
                   ),
-
                 SizedBox(
                   height: 12.0,
                 ),
                 TextFormField(
+                  controller: _emailcontroller,
                   decoration:  InputDecoration(
                     labelText: "Email",
                     fillColor: Colors.white,
@@ -131,6 +144,7 @@ class _secondSignupState extends State<secondSignup> {
                   height: 12.0,
                 ),
                 TextFormField(
+                  controller: _passwordcontroller,
                   decoration:  InputDecoration(
                     labelText: "Password",
                     fillColor: Colors.white,
@@ -149,66 +163,21 @@ class _secondSignupState extends State<secondSignup> {
                 SizedBox(
                   height: 12.0,
                 ),
-                TextFormField(
-                  decoration:  InputDecoration(
-                    labelText: "Confirm Password",
-                    fillColor: Colors.white,
-                    border:  OutlineInputBorder(
-                      borderRadius:  BorderRadius.circular(8.0),
-                      borderSide:  BorderSide(
-                      ),
-                    ),
-                    suffixIcon: Icon(Icons.remove_red_eye,color: Colors.red.shade600),
-                    //fillColor: Colors.green
-                  ),
-                  keyboardType: TextInputType.text,
-                  obscureText: true,
-                ),
                 SizedBox(
                   height: 12.0,
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 220.0),
                   child: FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      signUp();
+                    },
                     child: Icon(
+
                       Icons.arrow_forward,
                       color: Colors.white,
                     ),
                     backgroundColor: Colors.red.shade600,
-                  ),
-                ),
-                SizedBox(
-                  height: 12.0,
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Divider(
-                      color: Colors.black87,
-                    )),
-                    Text("  or  "),
-                    Expanded(
-                        child: Divider(
-                      color: Colors.black87,
-                    )),
-                  ],
-                ),
-                SizedBox(
-                  height: 12.0,
-                ),
-                SizedBox(
-                  width: 250.0,
-                  height: 40.0,
-                  child: FlatButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Sign up with Google",
-                      style: TextStyle(color: Colors.red.shade600),
-                    ),
-                    color: Colors.grey.shade200,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0)),
                   ),
                 ),
                 SizedBox(
@@ -218,7 +187,7 @@ class _secondSignupState extends State<secondSignup> {
                   children: <Widget>[
                     Text(
                       " Already have an account",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black45),
                     ),
                     MaterialButton(
                       onPressed: () {Navigator.of(context).push(
@@ -239,5 +208,54 @@ class _secondSignupState extends State<secondSignup> {
         ],
       ),
     );
+  }
+  //Sign up function will check If user Email is valid or not
+  void signUp() async {
+    _email = _emailcontroller.text;
+    _password = _passwordcontroller.text;
+    _name = _namecontroller.text;
+//Progress bar will Shown
+    try {
+      pr.style(
+          message: 'Please Wait...',
+          borderRadius: 10.0,
+          backgroundColor: Colors.white,
+          progressWidget: CircularProgressIndicator(),
+          elevation: 10.0,
+          insetAnimCurve: Curves.easeInOut,
+          progress: 0.0,
+          maxProgress: 100.0,
+          progressTextStyle: TextStyle(
+              color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+          messageTextStyle: TextStyle(
+              color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600)
+      );
+      await pr.show();
+
+      //Create User If All details Are Correct
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: _email, password: _password);
+
+      String mUid = (await FirebaseAuth.instance.currentUser()).uid;
+//Upload User Details To Firestore cloud
+      await databaseReference.collection("Users")
+          .document(mUid).setData({
+        'user_uid':  (await FirebaseAuth.instance.currentUser()).uid,
+        'username': _name,
+        'email': _email,
+        'password': _password,
+        'user_dp' : ""
+      });
+      pr.hide().then((isHidden) {
+        print(isHidden);
+      });
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => signIn()));
+    } catch (e) {
+      pr.hide().then((isHidden) {
+        print(isHidden);
+      });
+      print(e.message);
+    }
   }
 }
