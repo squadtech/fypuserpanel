@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:fyp/UserPanel/resetPassword.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'home.dart';
+import 'HomeScreen.dart';
+import 'constant.dart';
 import 'package:fyp/UserPanel/UserpanelSignUp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -22,222 +22,155 @@ class _signInState extends State<signIn> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: Material(
-          child: Stack(children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("images/background.png"),
-                  fit: BoxFit.fill,
-                ),
+    return Scaffold(
+      //  backgroundColor: Colors.white,
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/background.png"),
+                fit: BoxFit.fill,
               ),
-              child: null,
             ),
-            Container(
-              padding: EdgeInsets.only(left: 310.0, top: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+            child:  Padding(
+              padding: const EdgeInsets.only(top:50),
+              child: ListView(
                 children: <Widget>[
-                  CircleAvatar(
-                    radius: 40.0,
-                    child: Image(image: AssetImage("images/kustlogo.gif")),
+                  Center(
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 60.0,
+                            child: Image(image: AssetImage("images/kustlogo.gif")),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 20,left: 20,top: 50),
+                    child: Material(
+                      elevation: 2.0,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: TextFormField(
+                        controller: _emailcontroller,
+                        decoration:  InputDecoration(
+                          labelText: "Email",
+                          fillColor: Colors.white,
+                          border:  OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide:  BorderSide(
+                            ),
+                          ),
+                          suffixIcon: Icon(Icons.email,color: Colors.red.shade600),
+                          //fillColor: Colors.green
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 20,left: 20,top: 20),
+                    child: Material(
+                      elevation: 2.0,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child:   TextFormField(
+                        controller: _passwordcontroller,
+                        decoration:  InputDecoration(
+                          labelText: "Password",
+                          fillColor: Colors.white,
+                          border:  OutlineInputBorder(
+                            borderRadius:  BorderRadius.circular(8.0),
+                            borderSide:  BorderSide(
+                            ),
+                          ),
+                          suffixIcon: Icon(Icons.remove_red_eye,color: Colors.red.shade600),
+                          //fillColor: Colors.green
+                        ),
 
+                        keyboardType: TextInputType.text,
+                        obscureText: true,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 32),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Colors.red.shade600),
+                        child: FlatButton(
+                          child: Text(
+                            "Sign in",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                            });
+                          },
+                        ),
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Text(
+                      "FORGET PASSWORD ?",
+                      style: TextStyle(
+                          color: Constant.appColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "If you are not register ? ",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      GestureDetector(
+                        child: Text("Sign up ",
+                            style: TextStyle(
+                                color: Constant.appColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
+                                decoration: TextDecoration.underline)),
+                        onTap: () {
+                          setState(() {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UserPanelSignup()));
+                          });
+                        },
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 100.0,
-                ),
-                Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 30.0,
-                      ),
-                      Text(
-                        "Sign in",
-                        style: TextStyle(
-                            color: Colors.red.shade600,
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-
-                secondsignIn()
-              ],
-            ),
-          ]),
-        ),
-      ),
-    );
-  }
-}
-class secondsignIn extends StatefulWidget {
-  @override
-  _secondsignInState createState() => _secondsignInState();
-}
-
-class _secondsignInState extends State<secondsignIn> {
-  bool _isChecked = false;
-  void onChanged(bool value)
-  {
-    setState(() {
-      _isChecked = value;
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    return    Container(
-      padding: EdgeInsets.only(left: 35.0, right: 35.0),
-      child: Stack(
-        children: <Widget>[
-          Form(
-              child: Theme(
-                data: ThemeData(
-                    inputDecorationTheme: InputDecorationTheme(
-                        labelStyle:
-                        TextStyle(color: Colors.black87, fontSize: 20.0))),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    TextFormField(
-                      controller: _emailcontroller,
-                      decoration:  InputDecoration(
-                        labelText: "Email",
-                        fillColor: Colors.white,
-                        border:  OutlineInputBorder(
-                          borderRadius:  BorderRadius.circular(8.0),
-                          borderSide:  BorderSide(
-                          ),
-                        ),
-                        suffixIcon: Icon(Icons.email,color: Colors.red.shade600),
-                        //fillColor: Colors.green
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    TextFormField(
-                      controller: _passwordcontroller,
-                      decoration:  InputDecoration(
-                        labelText: "Password",
-                        fillColor: Colors.white,
-                        border:  OutlineInputBorder(
-                          borderRadius:  BorderRadius.circular(8.0),
-                          borderSide:  BorderSide(
-                          ),
-                        ),
-                        suffixIcon: Icon(Icons.lock,color: Colors.red.shade600),
-                        //fillColor: Colors.green
-                      ),
-                      keyboardType: TextInputType.text,
-                      obscureText: true,
-                    ),
-
-                    Row(
-                      children: <Widget>[
-                        Checkbox(
-                          value: _isChecked,
-                          onChanged: (bool value){onChanged(value);},
-                        ),
-                        Text("Remember me",style: TextStyle(color: Colors.red.shade600),),
-                        SizedBox(
-                          width: 35.0,
-                        ),
-                        InkWell(
-                          child: Text(
-                            "Forgot password",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              color: Colors.red.shade600
-                            ),
-                          ),
-                          onTap: () {Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => Reset()
-                              )
-                          );},
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 220.0),
-                      child: FloatingActionButton(
-                        onPressed: () {Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => theme()
-                            )
-                        );},
-                        child: GestureDetector(
-                          onTap: (){
-                            signIn();
-                          },
-                          child: Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                          ),
-                        ),
-                        backgroundColor: Colors.red.shade600,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: Divider(
-                              color: Colors.black87,
-                            )),
-                        Text("  or  "),
-                        Expanded(
-                            child: Divider(
-                              color: Colors.black87,
-                            )),
-                      ],
-                    ),
-
-                    SizedBox(
-                      height: 100.0,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          "  Create account",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        MaterialButton(
-                          onPressed: () {Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => UserPanelSignup()
-                              )
-                          );},
-                          child: Text(
-                            "Sign up ",
-                            style: TextStyle(color: Colors.white, fontSize: 20.0),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              )),
+          ),
         ],
+
       ),
+
     );
   }
 
@@ -270,7 +203,7 @@ class _secondsignInState extends State<secondsignIn> {
       pr.hide().then((isHidden) {
         print(isHidden);
       });
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => theme()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
     }catch(e){
       Fluttertoast.showToast(
           msg: e.message,

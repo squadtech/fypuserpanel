@@ -1,6 +1,7 @@
 import'package:flutter/material.dart';
+import 'package:fyp/UserPanel/signIn.dart';
 
-import 'UserPanel/UserpanelSignUp.dart';
+
 void main()=>runApp(
   MaterialApp(
     home:MyApp() ,
@@ -16,7 +17,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    body: UserPanelSignup(),
+    body: signIn(),
     );
   }
 }
