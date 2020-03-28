@@ -27,7 +27,7 @@ class _UserPanelSignInState extends State<UserPanelSignup> {
   Widget build(BuildContext context) {
     pr = new ProgressDialog(context);
     return Scaffold(
-      //  backgroundColor: Colors.white20,
+
       body: Stack(
         children: <Widget>[
           Container(
