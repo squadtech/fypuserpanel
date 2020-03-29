@@ -8,11 +8,11 @@ import 'informationForm.dart';
 import 'notification.dart';
 
 class HomePage extends StatelessWidget {
-  final GlobalKey _scaffoldKey = new GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      key: _key,
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
@@ -74,7 +74,7 @@ class HomePage extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.menu),
                         onPressed: () {
-                          Scaffold.of(context).openDrawer();
+                          _key.currentState.openDrawer();
                           //Scaffold.of(context).openDrawer();
                         },
                       ),

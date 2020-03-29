@@ -140,8 +140,8 @@ class _UserPanelSignInState extends State<UserPanelSignup> {
                                 fontSize: 18),
                           ),
                           onPressed: () {
+                            signUp();
                             setState(() {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                             });
                           },
                         ),
@@ -182,15 +182,12 @@ class _UserPanelSignInState extends State<UserPanelSignup> {
             ),
           ),
         ],
-
       ),
 
     );
   }
-}
-
   //Sign up function will check If user Email is valid or not
-  /*void signUp() async {
+  void signUp() async {
     _email = _emailcontroller.text;
     _password = _passwordcontroller.text;
     _name = _namecontroller.text;
@@ -238,4 +235,4 @@ class _UserPanelSignInState extends State<UserPanelSignup> {
       print(e.message);
     }
   }
-}*/
+}
