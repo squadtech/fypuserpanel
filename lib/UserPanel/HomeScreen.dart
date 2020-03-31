@@ -110,33 +110,25 @@ class HomePage extends StatelessWidget {
                       builder: (_) => AppliedFormScreen()
                   )),
                   child: _buildFeaturedItem( title:
-                  "BS Computer Science", description: "90 places worth to visit")),
+                  "Undergraduate", description: "90 places worth to visit")),
             ),
             Card(
               child:  GestureDetector(
                   onTap: ()=>  Navigator.push(context, MaterialPageRoute(
-                      builder: (_) => AppliedFormScreen()
-                  )),
-                  child: _buildFeaturedItem(title:
-                  "Software Engineering", description: "40 places worth to visit")),
-            ),
-            Card(
-              child: GestureDetector(
-                  onTap: ()=>  Navigator.push(context, MaterialPageRoute(
                       builder: (_) => AppliedFormForGraduate()
                   )),
-                  child: _buildFeaturedItem( title:
-                  "MS Computer Science", description: "90 places worth to visit")),
+                  child: _buildFeaturedItem(title:
+                  "Graduate", description: "40 places worth to visit")),
             ),
+
             Card(
               child:  GestureDetector(
                   onTap: ()=>  Navigator.push(context, MaterialPageRoute(
                       builder: (_) =>  AppliedFormForGraduate()
                   )),
                   child: _buildFeaturedItem(title:
-                  "PDH Computer Science", description: "40 places worth to visit")),
+                  "PDH", description: "40 places worth to visit")),
             ),
-
 
           ],
         ),
