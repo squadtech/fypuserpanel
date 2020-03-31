@@ -22,6 +22,7 @@ class _AppliedFormScreenState extends State<AppliedFormScreen> {
   String url;
   bool isloading = true;
   String mName = '';
+  String mDp = '';
   DocumentSnapshot mRef;
 
   @override
@@ -58,7 +59,7 @@ class _AppliedFormScreenState extends State<AppliedFormScreen> {
                       ),)
                     ],
                   ),
-                  mRef['user_dp']!=null?CircleAvatar(backgroundImage: NetworkImage(mRef['user_dp']), radius: 40,):CircleAvatar(backgroundImage: AssetImage('images/img.png'), radius: 40,)
+                  mDp!=''?CircleAvatar(backgroundImage: NetworkImage(mDp), radius: 40,):CircleAvatar(backgroundImage: AssetImage('images/img.png'), radius: 40,)
                 ],
               ),
             ),
@@ -151,7 +152,8 @@ class _AppliedFormScreenState extends State<AppliedFormScreen> {
         .get();
     setState(() {
       isloading = false;
-      mName = mRef['username'];
+      mName = mRef["username"];
+      mDp = mRef["user_dp"];
     });
   }
   FirebaseStorage _storage = FirebaseStorage.instance;

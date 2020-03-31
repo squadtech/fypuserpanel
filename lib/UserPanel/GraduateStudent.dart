@@ -21,6 +21,7 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
   String url;
   bool isloading = true;
   String mName = '';
+  String mDp='';
   DocumentSnapshot mRef;
 
   @override
@@ -43,7 +44,7 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("Hello Fakhar,", style: TextStyle(
+                      Text(mRef!= null?"Hello ${mRef['username']},":'Hello', style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold
                       )),
@@ -52,37 +53,47 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
                       ),)
                     ],
                   ),
-                  CircleAvatar(backgroundImage: AssetImage('images/img.png'), radius: 40,)
+                  mDp!=null?CircleAvatar(backgroundImage: NetworkImage(mDp),radius: 40,):CircleAvatar(backgroundImage: AssetImage('images/img.png'), radius: 40,)
                 ],
               ),
             ),
             Card(
               child: GestureDetector(
-                  onTap: ()=>_openDestinationPage(context),
+                  onTap: (){
+                    uploadmatricdmc();
+                  },
                   child: _buildFeaturedItem( title:
                   "Matric DMC", subtitle: "90 places worth to visit")),
             ),
             Card(
               child:  GestureDetector(
-                  onTap: ()=>_openDestinationPage(context),
+                  onTap: (){
+                    uploadfscdmc();
+                  },
                   child: _buildFeaturedItem(title:
                   "Fsc DMC", subtitle: "40 places worth to visit")),
             ),
             Card(
               child: GestureDetector(
-                  onTap: ()=>_openDestinationPage(context),
+                  onTap: (){
+                    uploadGatmarksheet();
+                  },
                   child: _buildFeaturedItem( title:
                   "GAT Marks Sheet", subtitle: "90 places worth to visit")),
             ),
             Card(
               child: GestureDetector(
-                  onTap: ()=>_openDestinationPage(context),
+                  onTap: (){
+                    uploadBsScript();
+                  },
                   child: _buildFeaturedItem( title:
                   "BS Transcript", subtitle: "90 places worth to visit")),
             ),
             Card(
               child:  GestureDetector(
-                  onTap: ()=>_openDestinationPage(context),
+                  onTap: (){
+                    uploadcnic();
+                  },
                   child: _buildFeaturedItem(title:
                   "Student CNIC", subtitle: "40 places worth to visit")),
             ),
@@ -149,7 +160,8 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
         .get();
     setState(() {
       isloading = false;
-      mName = mRef['username'];
+      mName = mRef["username"];
+      mDp = mRef["user_dp"];
     });
   }
   FirebaseStorage _storage = FirebaseStorage.instance;
@@ -162,14 +174,14 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
     String mUid = (await FirebaseAuth.instance.currentUser()).uid;
 
     //Create a reference to the location you want to upload to in firebase
-    StorageReference reference = _storage.ref().child("undergradution/").child((await FirebaseAuth.instance.currentUser()).uid);
+    StorageReference reference = _storage.ref().child("graduation/").child((await FirebaseAuth.instance.currentUser()).uid);
 
     //Upload the file to firebase
     StorageUploadTask uploadTask = reference.putFile(_image);
     uploadTask.onComplete.then((result) async {
       url = await result.ref.getDownloadURL();
 
-      await databaseReference.collection("undergradution").document(mUid).setData({
+      await databaseReference.collection("graduation").document(mUid).setData({
 
         'metric_dmc': url,
 
@@ -197,14 +209,14 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
     String mUid = (await FirebaseAuth.instance.currentUser()).uid;
 
     //Create a reference to the location you want to upload to in firebase
-    StorageReference reference = _storage.ref().child("undergradution/").child((await FirebaseAuth.instance.currentUser()).uid);
+    StorageReference reference = _storage.ref().child("graduation/").child((await FirebaseAuth.instance.currentUser()).uid);
 
     //Upload the file to firebase
     StorageUploadTask uploadTask = reference.putFile(_image);
     uploadTask.onComplete.then((result) async {
       url = await result.ref.getDownloadURL();
 
-      await databaseReference.collection("undergradution").document(mUid).setData({
+      await databaseReference.collection("graduation").document(mUid).setData({
 
         'fsc_dmc': url,
 
@@ -224,7 +236,7 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
     });
 
   }
-  Future<Uri> uploadntsmarksheet() async {
+  Future<Uri> uploadGatmarksheet() async {
 
     //Get the file from the image picker and store it
     _image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -232,14 +244,14 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
     String mUid = (await FirebaseAuth.instance.currentUser()).uid;
 
     //Create a reference to the location you want to upload to in firebase
-    StorageReference reference = _storage.ref().child("undergradution/").child((await FirebaseAuth.instance.currentUser()).uid);
+    StorageReference reference = _storage.ref().child("graduation/").child((await FirebaseAuth.instance.currentUser()).uid);
 
     //Upload the file to firebase
     StorageUploadTask uploadTask = reference.putFile(_image);
     uploadTask.onComplete.then((result) async {
       url = await result.ref.getDownloadURL();
 
-      await databaseReference.collection("undergradution").document(mUid).setData({
+      await databaseReference.collection("graduation").document(mUid).setData({
 
         'gat_marksheet': url,
 
@@ -267,20 +279,56 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
     String mUid = (await FirebaseAuth.instance.currentUser()).uid;
 
     //Create a reference to the location you want to upload to in firebase
-    StorageReference reference = _storage.ref().child("undergradution/").child((await FirebaseAuth.instance.currentUser()).uid);
+    StorageReference reference = _storage.ref().child("graduation/").child((await FirebaseAuth.instance.currentUser()).uid);
 
     //Upload the file to firebase
     StorageUploadTask uploadTask = reference.putFile(_image);
     uploadTask.onComplete.then((result) async {
       url = await result.ref.getDownloadURL();
 
-      await databaseReference.collection("undergradution").document(mUid).setData({
+      await databaseReference.collection("graduation").document(mUid).setData({
 
         'cnic': url,
 
       }, merge: true,);
       Fluttertoast.showToast(
           msg: 'CNIC Uploaded',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.grey.shade200,
+          textColor: Colors.black,
+          fontSize: 16.0
+      );
+      setState(() {
+
+      });
+    });
+
+  }
+
+  Future<Uri> uploadBsScript() async {
+
+    //Get the file from the image picker and store it
+    _image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    String mUid = (await FirebaseAuth.instance.currentUser()).uid;
+
+    //Create a reference to the location you want to upload to in firebase
+    StorageReference reference = _storage.ref().child("graduation/").child((await FirebaseAuth.instance.currentUser()).uid);
+
+    //Upload the file to firebase
+    StorageUploadTask uploadTask = reference.putFile(_image);
+    uploadTask.onComplete.then((result) async {
+      url = await result.ref.getDownloadURL();
+
+      await databaseReference.collection("graduation").document(mUid).setData({
+
+        'bs_transcript': url,
+
+      }, merge: true,);
+      Fluttertoast.showToast(
+          msg: 'Bs Transcript Uploaded',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIos: 1,
