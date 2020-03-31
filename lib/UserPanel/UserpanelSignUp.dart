@@ -160,7 +160,7 @@ class _UserPanelSignInState extends State<UserPanelSignup> {
                             fontWeight: FontWeight.normal),
                       ),
                       GestureDetector(
-                        child: Text("Already Sign in ",
+                        child: Text(" Already Sign in ",
                             style: TextStyle(
                                 color: Constant.appColor,
                                 fontWeight: FontWeight.w500,
