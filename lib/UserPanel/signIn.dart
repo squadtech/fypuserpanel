@@ -19,9 +19,11 @@ final _passwordcontroller = TextEditingController();
 ProgressDialog pr;
 
 class _signInState extends State<signIn> {
-
   @override
   Widget build(BuildContext context) {
+
+    pr = new ProgressDialog(context);
+
     return Scaffold(
       //  backgroundColor: Colors.white,
       body: Stack(
@@ -106,6 +108,9 @@ class _signInState extends State<signIn> {
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                             color: Colors.red.shade600),
                         child: FlatButton(
+                          onPressed: () {
+                            signIn();
+                          },
                           child: Text(
                             "Sign in",
                             style: TextStyle(
@@ -113,25 +118,10 @@ class _signInState extends State<signIn> {
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                            });
-                          },
+
                         ),
                       )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Text(
-                      "FORGET PASSWORD ?",
-                      style: TextStyle(
-                          color: Constant.appColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
+
                   SizedBox(
                     height: 10,
                   ),
