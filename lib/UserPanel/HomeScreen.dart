@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/UserPanel/GraduateStudent.dart';
 import 'package:fyp/UserPanel/UnderGraduate.dart';
 import 'package:fyp/UserPanel/constant.dart';
+import 'package:fyp/UserPanel/signIn.dart';
 
 import 'Shortlisting.dart';
 import 'informationForm.dart';
@@ -43,19 +45,24 @@ class HomePage extends StatelessWidget {
               );},
 
             ),
-            ListTile(
-              title: Text("information form"),
-              leading: Icon(Icons.view_list),
-              onTap: () {Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => InfoForm()
-                  )
-              );},
-            ),
+//            ListTile(
+//              title: Text("information form"),
+//              leading: Icon(Icons.view_list),
+//              onTap: () {Navigator.of(context).push(
+//                  MaterialPageRoute(
+//                      builder: (BuildContext context) => InfoForm()
+//                  )
+//              );},
+//            ),
             Divider(height: 20.0,),
             ListTile(
               title: Text("Logout"),
-              leading: Icon(Icons.exit_to_app),
+              leading: GestureDetector(
+                  onTap: (){
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>signIn()));
+                  },
+                  child: Icon(Icons.exit_to_app)),
             ),
           ],
         ),
@@ -106,9 +113,12 @@ class HomePage extends StatelessWidget {
             ),
             Card(
               child: GestureDetector(
-                  onTap: ()=>  Navigator.push(context, MaterialPageRoute(
-                      builder: (_) => AppliedFormScreen()
-                  )),
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AppliedFormScreen()));
+                  },
                   child: _buildFeaturedItem( title:
                   "Undergraduate", description: "90 places worth to visit")),
             ),
