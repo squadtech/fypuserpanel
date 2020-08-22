@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'constant.dart';
 
 class InfoForm extends StatefulWidget {
 
@@ -13,7 +16,13 @@ class InfoForm extends StatefulWidget {
   @override
   _InfoFormState createState() => _InfoFormState(_imageFile,_imageFile2,_imageFile3);
 }
-
+final programController = TextEditingController();
+final domicileController = TextEditingController();
+final applicantNameController = TextEditingController();
+final applicFatherNameController = TextEditingController();
+final dobController = TextEditingController();
+final cnicController = TextEditingController();
+final adressController = TextEditingController();
 class _InfoFormState extends State<InfoForm> with TickerProviderStateMixin {
   TabController tabController;
 
@@ -221,6 +230,29 @@ class _InfoFormState extends State<InfoForm> with TickerProviderStateMixin {
                 ],
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:18.0,vertical: 15),
+              child: ButtonTheme(
+                height: 50.0,
+                child: RaisedButton(
+                  color: Constant.appColor,
+                  shape:  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      side: BorderSide(color: Colors.red)
+                  ),
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InfoForm(_imageFile,_imageFile2,_imageFile3)));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Save',style: GoogleFonts.montserrat(fontSize: 14,fontWeight: FontWeight.w500,color: Colors.white),)
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         )
     );
@@ -483,6 +515,21 @@ class _InfoFormState extends State<InfoForm> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Image.file(_imageFile,height: 100,width: 100,),
+                    ),
+                    Expanded(
+                      child: Image.file(_imageFile2,height: 100,width: 100,),
+                    ),
+                    Expanded(
+                      child: Image.file(_imageFile3,height: 100,width: 100,),
+                    )
+                  ],
+                )
               ],
             )
         )
