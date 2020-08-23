@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'constant.dart';
 
 class Personal_Information extends StatefulWidget {
+
+
   @override
   _Personal_InformationState createState() => _Personal_InformationState();
 }
