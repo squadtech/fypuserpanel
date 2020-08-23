@@ -1,16 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/UserPanel/GraduateStudent.dart';
 import 'package:fyp/UserPanel/UnderGraduate.dart';
 import 'package:fyp/UserPanel/constant.dart';
+import 'package:fyp/UserPanel/personal_info.dart';
+import 'package:fyp/UserPanel/profile_setting.dart';
 import 'package:fyp/UserPanel/signIn.dart';
 
 import 'Shortlisting.dart';
 import 'informationForm.dart';
 import 'notification.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+String mName = '';
+String mDp = '';
+String mEmail= '';
+final databaseReference = Firestore.instance;
+DocumentSnapshot mRef;
+class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +39,11 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
-                child: Icon(Icons.person,color: Colors.red.shade600,),
                 backgroundColor: Colors.white,
+                backgroundImage: mDp!=''?NetworkImage(mDp):AssetImage('images/kustlogo.gif'),
               ),
-              accountName: Text("faaiz"),
-              accountEmail: Text("faaiz11@gmail.com"),
+              accountName: mName!=''?Text(mName):Text('No Info'),
+              accountEmail: mEmail!=''?Text(mEmail):Text('No Info'),
             ),
             ListTile(
               title: Text("Merit List"),
@@ -45,15 +64,24 @@ class HomePage extends StatelessWidget {
               );},
 
             ),
-//            ListTile(
-//              title: Text("information form"),
-//              leading: Icon(Icons.view_list),
-//              onTap: () {Navigator.of(context).push(
-//                  MaterialPageRoute(
-//                      builder: (BuildContext context) => InfoForm()
-//                  )
-//              );},
-//            ),
+            ListTile(
+              title: Text("Profile  Setting"),
+              leading: Icon(Icons.view_list),
+              onTap: () {Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => Profile_Setting()
+                  )
+              );},
+            ),
+            ListTile(
+              title: Text("Personal Information"),
+              leading: Icon(Icons.view_list),
+              onTap: () {Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => Personal_Information()
+                  )
+              );},
+            ),
             Divider(height: 20.0,),
             ListTile(
               title: Text("Logout"),
@@ -85,7 +113,10 @@ class HomePage extends StatelessWidget {
                           //Scaffold.of(context).openDrawer();
                         },
                       ),
-                      Text("Hello Fakhar,", style: TextStyle(
+                      mName!=''?Text("Hello $mName,", style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold
+                      )):Text("Hello User,", style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold
                       )),
@@ -94,7 +125,7 @@ class HomePage extends StatelessWidget {
                       ),)
                     ],
                   ),
-                  CircleAvatar(backgroundImage: AssetImage('images/kustlogo.png'), radius: 40,)
+                  CircleAvatar(backgroundImage: mDp!=''?NetworkImage(mDp):AssetImage('images/kustlogo.png'), radius: 40,)
                 ],
               ),
             ),
@@ -146,6 +177,18 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  void getData() async {
+    mRef = await Firestore.instance
+        .collection("Users")
+        .document((await FirebaseAuth.instance.currentUser()).uid)
+        .get();
+    setState(() {
+      mName = mRef["username"];
+      mDp = mRef["user_dp"];
+      mEmail = mRef['email'];
+    });
+  }
+
   Padding _buildFeaturedItem({String image, String title, String description}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -186,7 +229,6 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
 }
 
 

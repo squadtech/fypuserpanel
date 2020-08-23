@@ -19,9 +19,15 @@ final _passwordcontroller = TextEditingController();
 ProgressDialog pr;
 
 class _signInState extends State<signIn> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkUser();
+  }
   @override
   Widget build(BuildContext context) {
-
     pr = new ProgressDialog(context);
 
     return Scaffold(
@@ -163,6 +169,14 @@ class _signInState extends State<signIn> {
 
     );
   }
+  //Check user
+  void checkUser() async {
+    String mUiD = (await FirebaseAuth.instance.currentUser()).uid;
+    if(mUiD != null){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomePage()));
+    }
+  }
+
 
   //Sign in will be called to validate if User Exist
   Future<void> signIn() async {
