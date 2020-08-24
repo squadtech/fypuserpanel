@@ -5,6 +5,7 @@ import 'package:fyp/UserPanel/GraduateStudent.dart';
 import 'package:fyp/UserPanel/UnderGraduate.dart';
 import 'package:fyp/UserPanel/constant.dart';
 import 'package:fyp/UserPanel/personal_info.dart';
+import 'package:fyp/UserPanel/phdStudents.dart';
 import 'package:fyp/UserPanel/profile_setting.dart';
 import 'package:fyp/UserPanel/signIn.dart';
 
@@ -83,15 +84,15 @@ class _HomePageState extends State<HomePage> {
               );},
             ),
             Divider(height: 20.0,),
-            ListTile(
-              title: Text("Logout"),
-              leading: GestureDetector(
-                  onTap: (){
-                    FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>signIn()));
-                  },
-                  child: Icon(Icons.exit_to_app)),
-            ),
+            GestureDetector(
+              onTap: (){
+                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>signIn()));
+              },
+              child: ListTile(
+                title: Text("Logout"),
+                leading: Icon(Icons.exit_to_app)),
+              ),
           ],
         ),
       ),
@@ -165,7 +166,7 @@ class _HomePageState extends State<HomePage> {
             Card(
               child:  GestureDetector(
                   onTap: ()=>  Navigator.push(context, MaterialPageRoute(
-                      builder: (_) =>  AppliedFormForGraduate()
+                      builder: (_) =>  PhdStudents()
                   )),
                   child: _buildFeaturedItem(title:
                   "PDH", description: "40 places worth to visit")),

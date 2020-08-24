@@ -243,7 +243,14 @@ class _AppliedFormScreenState extends State<AppliedFormScreen> {
                       side: BorderSide(color: Colors.red)
                   ),
                   onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InfoForm(_imageFile,_imageFile2,_imageFile3)));
+                    if(_imageFile!=null && _imageFile2!=null && _imageFile3!=null){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InfoForm(_imageFile,_imageFile2,_imageFile3)));
+
+                    }else{
+                      Fluttertoast.showToast(msg: "Select All Images");
+
+                    }
+
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

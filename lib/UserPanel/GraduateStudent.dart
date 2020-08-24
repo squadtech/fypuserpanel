@@ -184,7 +184,13 @@ class _AppliedFormForGraduateState extends State<AppliedFormForGraduate> {
                       side: BorderSide(color: Colors.red)
                   ),
                   onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InformationGradute(_imageFile,_imageFile2)));
+                    if(_imageFile!=null&&_imageFile2!=null){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InformationGradute(_imageFile,_imageFile2)));
+
+                    }
+                    else{
+                      Fluttertoast.showToast(msg: "Select All Images");
+                    }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
