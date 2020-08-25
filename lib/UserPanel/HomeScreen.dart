@@ -39,6 +39,9 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Constant.appColor
+              ),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 backgroundImage: mDp!=''?NetworkImage(mDp):AssetImage('images/kustlogo.gif'),
